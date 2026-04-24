@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { formatUAH, formatCount } from '@/lib/formatters';
+import { BASE_URL } from '@/lib/config';
 import OGCard from './OGCard';
 
 interface Props {
@@ -12,17 +13,18 @@ export default function ShareRow({ amount }: Props) {
   const [copied, setCopied] = useState(false);
   const [showOG, setShowOG] = useState(false);
 
+  const pageUrl = `${BASE_URL}/result/${amount}`;
+  const shareText = `${formatUAH(amount)} вкрадених коштів — це ${formatCount(Math.floor(amount / 15000))} бронежилетів для ЗСУ. Порахуй сам: ${BASE_URL}`;
+
   function copyLink() {
-    navigator.clipboard.writeText(`https://kradene.ua/result/${amount}`).catch(() => {});
+    navigator.clipboard.writeText(pageUrl).catch(() => {});
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   }
 
-  const shareText = `${formatUAH(amount)} вкрадених коштів — це ${formatCount(Math.floor(amount / 15000))} бронежилетів для ЗСУ. Порахуй сам: kradene.ua`;
-
   const platforms = [
-    { name: 'Telegram', color: '#229ED9', href: `https://t.me/share/url?url=https://kradene.ua/result/${amount}&text=${encodeURIComponent(shareText)}` },
-    { name: 'Facebook', color: '#1877F2', href: `https://www.facebook.com/sharer/sharer.php?u=https://kradene.ua/result/${amount}` },
+    { name: 'Telegram', color: '#229ED9', href: `https://t.me/share/url?url=${encodeURIComponent(pageUrl)}&text=${encodeURIComponent(shareText)}` },
+    { name: 'Facebook', color: '#1877F2', href: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(pageUrl)}` },
     { name: 'Twitter/X', color: '#E7E9EA', href: `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}` },
   ];
 

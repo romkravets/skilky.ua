@@ -3,6 +3,7 @@ import { Oswald, IBM_Plex_Mono, IBM_Plex_Sans } from 'next/font/google';
 import './globals.css';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
+import { BASE_URL } from '@/lib/config';
 
 const oswald = Oswald({
   variable: '--font-oswald',
@@ -25,11 +26,25 @@ const ibmPlexSans = IBM_Plex_Sans({
 export const metadata: Metadata = {
   title: 'Калькулятор вкрадених мільярдів',
   description: 'Введіть суму вкрадених коштів — і дізнайтеся, що могло бути збудовано, куплено або врятовано.',
+  metadataBase: new URL(BASE_URL),
   openGraph: {
     title: 'Калькулятор вкрадених мільярдів',
     description: 'Скільки бронежилетів, лікарень або шкіл можна збудувати за вкрадені мільярди?',
     locale: 'uk_UA',
     type: 'website',
+    url: BASE_URL,
+    images: [
+      {
+        url: `${BASE_URL}/api/og?amount=6700000000`,
+        width: 1200,
+        height: 630,
+        alt: 'Калькулятор вкрадених мільярдів',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    images: [`${BASE_URL}/api/og?amount=6700000000`],
   },
 };
 

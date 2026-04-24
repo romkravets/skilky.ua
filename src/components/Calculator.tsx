@@ -260,13 +260,13 @@ function ResultSection({
   );
 }
 
-export default function Calculator({ usdRate }: { usdRate: number }) {
-  const [inputRaw, setInputRaw] = useState('');
+export default function Calculator({ usdRate, prefillAmount }: { usdRate: number; prefillAmount?: number }) {
+  const [inputRaw, setInputRaw] = useState(prefillAmount ? String(prefillAmount) : '');
   const [currency, setCurrency] = useState<Currency>('UAH');
-  const [amount, setAmount] = useState(0);
+  const [amount, setAmount] = useState(prefillAmount ?? 0);
   const [submittedCurrency, setSubmittedCurrency] = useState<Currency>('UAH');
-  const [submittedRaw, setSubmittedRaw] = useState('');
-  const [showResults, setShowResults] = useState(false);
+  const [submittedRaw, setSubmittedRaw] = useState(prefillAmount ? String(prefillAmount) : '');
+  const [showResults, setShowResults] = useState(!!prefillAmount);
   const [activeFilter, setActiveFilter] = useState('all');
   const resultsRef = useRef<HTMLDivElement>(null);
 
