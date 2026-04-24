@@ -2,6 +2,8 @@
 
 ![Screenshot](public/screenshot.png)
 
+[![Demo video](https://img.youtube.com/vi/rs9r7vru7vY/maxresdefault.jpg)](https://youtu.be/rs9r7vru7vY?si=3z80xEg5233FP2aY)
+
 > Convert stolen billions into real human losses.
 
 ---
