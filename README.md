@@ -1,36 +1,123 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# kradene.ua — Corruption Calculator
 
-## Getting Started
+![Screenshot](public/screenshot.png)
 
-First, run the development server:
+> Convert stolen billions into real human losses.
+
+---
+
+## English
+
+### What is this?
+
+**kradene.ua** is a non-commercial social web project. Enter the amount of stolen funds from a corruption case and the calculator converts that abstract number into concrete lost opportunities: bulletproof vests, hospitals, schools, ambulances, apartments.
+
+The goal is to make corruption tangible — to turn billions from headlines into things people actually understand and feel.
+
+**This is NOT a business.** No monetization. No subscriptions. No ads. Pure civic mission.
+
+### Features
+
+- **Calculator** — enter any amount in UAH or USD (live NBU exchange rate), get a breakdown across 19 equivalents
+- **5 pre-loaded cases** — click any real corruption case to instantly calculate it
+- **Category filters** — Military, Healthcare, Education, Housing, Physical scale
+- **SVG visualizations** — dot-matrix of icons showing scale for each equivalent
+- **Share** — Telegram, Facebook, Twitter/X share buttons + OG card preview (1200×630)
+- **USD/UAH toggle** — values convert automatically when switching currency
+
+### Tech Stack
+
+- **Next.js 15** (App Router) + TypeScript
+- **Tailwind CSS**
+- **`@vercel/og`** for dynamic OG images
+- **Vercel** hosting (free tier)
+- No backend. No database. No cookies.
+
+### Data Sources
+
+Every number has a source. No made-up figures.
+
+| Category | Sources |
+|----------|---------|
+| Military | Повернись живим, Фонд Притули, Dignitas |
+| Healthcare | МОЗ України, НСЗУ, Тендерний портал |
+| Education | МОН України, Держбуд |
+| Housing | ЛУН, OLX |
+| Exchange rate | НБУ API (daily, cached 24h) |
+| Corruption cases | НАБУ, САП, Bihus.Info, DoZorro |
+
+### Getting Started
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
+npm run dev       # http://localhost:3000
+npm run build
+npm run start
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Legal
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+This project operates on **open data** from official sources. Conclusions about specific individuals are strictly within the scope of official НАБУ, САП investigations and court verdicts. No personal data is collected.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Code: **MIT License** · Data: **CC-BY**
 
-## Learn More
+---
 
-To learn more about Next.js, take a look at the following resources:
+## Українська
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Що це таке?
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+**kradene.ua** — некомерційний соціальний веб-проєкт. Введіть суму вкрадених коштів з будь-якого корупційного кейсу — і калькулятор перетворить абстрактну цифру на конкретні втрачені можливості: бронежилети, лікарні, школи, машини швидкої, квартири.
 
-## Deploy on Vercel
+Мета — зробити корупцію відчутною. Перетворити мільярди із заголовків новин на речі, які людина розуміє і відчуває.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+**Це НЕ бізнес.** Жодної монетизації. Жодних підписок. Жодної реклами. Чиста громадянська місія.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### Що вміє
+
+- **Калькулятор** — вводиш суму в гривнях або доларах (курс НБУ в реальному часі), отримуєш розбивку по 19 еквівалентах
+- **5 готових кейсів** — клік на реальну корупційну справу і одразу бачиш результат
+- **Фільтри по категоріях** — Армія, Медицина, Освіта, Житло, Фізично
+- **SVG-візуалізація** — dot-matrix з іконками що показує масштаб
+- **Шерінг** — Telegram, Facebook, Twitter/X + превʼю OG-картки 1200×630
+- **Перемикач USD/UAH** — значення автоматично конвертується при зміні валюти
+
+### Технічний стек
+
+- **Next.js 15** (App Router) + TypeScript
+- **Tailwind CSS**
+- **`@vercel/og`** для динамічних OG-картинок
+- **Vercel** хостинг
+- Без бекенду. Без бази даних. Без cookies.
+
+### Джерела даних
+
+Кожна цифра має джерело. Жодних вигаданих чисел.
+
+| Категорія | Джерела |
+|-----------|---------|
+| Армія | Повернись живим, Фонд Притули, Dignitas |
+| Медицина | МОЗ України, НСЗУ, Тендерний портал |
+| Освіта | МОН України, Держбуд |
+| Житло | ЛУН, OLX |
+| Курс валют | API НБУ (щоденно, кеш 24г) |
+| Корупційні кейси | НАБУ, САП, Bihus.Info, DoZorro |
+
+### Запуск
+
+```bash
+npm install
+npm run dev       # http://localhost:3000
+npm run build
+npm run start
+```
+
+### Правові застереження
+
+Проєкт оперує **відкритими даними** з офіційних джерел. Висновки щодо конкретних осіб — виключно в межах офіційних розслідувань НАБУ, САП та вироків судів. Персональні дані не збираються.
+
+Код: **MIT License** · Дані: **CC-BY**
+
+---
+
+*Якщо знайшли помилку в даних або хочете додати новий кейс — відкрийте [issue](https://github.com/romkravets/skilky.ua/issues) або [pull request](https://github.com/romkravets/skilky.ua/pulls).*
