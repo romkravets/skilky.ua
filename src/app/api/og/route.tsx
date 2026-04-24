@@ -48,6 +48,8 @@ export async function GET(req: NextRequest) {
     .sort((a, b) => (amount / b.price) - (amount / a.price))
     .slice(0, 3);
 
+  const domain = (process.env.NEXT_PUBLIC_BASE_URL ?? 'https://kradene-ua.vercel.app').replace('https://', '');
+
   return new ImageResponse(
     (
       <div
@@ -56,9 +58,6 @@ export async function GET(req: NextRequest) {
           height: '630px',
           background: '#0a0909',
           display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'space-between',
-          padding: '60px 72px',
           fontFamily: 'sans-serif',
           position: 'relative',
         }}
@@ -66,78 +65,91 @@ export async function GET(req: NextRequest) {
         {/* Grid background */}
         <div style={{
           position: 'absolute', inset: 0,
-          backgroundImage: 'linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px)',
+          backgroundImage: 'linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px)',
           backgroundSize: '60px 60px',
         }} />
 
         {/* Red left bar */}
+        <div style={{ position: 'absolute', top: 0, left: 0, bottom: 0, width: '6px', background: '#DC2626' }} />
+
+        {/* LEFT COLUMN — amount */}
         <div style={{
-          position: 'absolute', top: 0, left: 0, bottom: 0, width: '6px',
-          background: '#DC2626',
+          display: 'flex', flexDirection: 'column', justifyContent: 'space-between',
+          width: '480px', padding: '56px 48px 56px 72px',
+          position: 'relative', zIndex: 1,
+        }}>
+          {/* Top label */}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+            <div style={{ fontSize: '13px', color: '#DC2626', letterSpacing: '0.18em', textTransform: 'uppercase', display: 'flex' }}>
+              KRADENE.UA
+            </div>
+            <div style={{ fontSize: '13px', color: 'rgba(240,237,232,0.35)', letterSpacing: '0.08em', display: 'flex' }}>
+              Калькулятор вкрадених мільярдів
+            </div>
+          </div>
+
+          {/* Amount block */}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+            {label && (
+              <div style={{ fontSize: '20px', color: 'rgba(240,237,232,0.45)', display: 'flex' }}>
+                {label}
+              </div>
+            )}
+            <div style={{
+              fontSize: '86px', fontWeight: 700, color: '#f0ede8',
+              lineHeight: 0.95, letterSpacing: '-0.03em', display: 'flex',
+            }}>
+              {formatUAH(amount)}
+            </div>
+            <div style={{ fontSize: '20px', color: 'rgba(240,237,232,0.40)', display: 'flex', marginTop: '4px' }}>
+              вкрадених коштів
+            </div>
+          </div>
+
+          {/* Domain */}
+          <div style={{ fontSize: '14px', color: 'rgba(240,237,232,0.22)', letterSpacing: '0.08em', display: 'flex' }}>
+            {domain}
+          </div>
+        </div>
+
+        {/* Divider */}
+        <div style={{
+          width: '1px', background: 'rgba(255,255,255,0.08)',
+          margin: '48px 0', flexShrink: 0,
         }} />
 
-        {/* Top label */}
+        {/* RIGHT COLUMN — equivalents */}
         <div style={{
-          fontSize: '14px',
-          color: '#DC2626',
-          letterSpacing: '0.18em',
-          textTransform: 'uppercase',
-          display: 'flex',
+          flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center',
+          padding: '48px 64px 48px 56px', gap: '0px',
         }}>
-          KRADENE.UA · Калькулятор вкрадених мільярдів
-        </div>
-
-        {/* Center */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-          {label && (
-            <div style={{ fontSize: '22px', color: 'rgba(240,237,232,0.55)', display: 'flex' }}>
-              {label}
-            </div>
-          )}
-
-          {/* Amount */}
-          <div style={{
-            fontSize: '80px',
-            fontWeight: 700,
-            color: '#f0ede8',
-            lineHeight: 1,
-            letterSpacing: '-0.02em',
-            display: 'flex',
-          }}>
-            {formatUAH(amount)}
+          <div style={{ fontSize: '13px', color: 'rgba(240,237,232,0.30)', letterSpacing: '0.14em', textTransform: 'uppercase', display: 'flex', marginBottom: '32px' }}>
+            = ось що можна збудувати
           </div>
 
-          {/* Equivalents */}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', marginTop: '8px' }}>
-            {top.map((eq, i) => {
-              const cnt = Math.floor(amount / eq.price);
-              const color = CAT_COLORS[eq.category];
-              return (
-                <div key={eq.id} style={{
-                  display: 'flex', alignItems: 'baseline', gap: '12px',
-                  opacity: 1 - i * 0.1,
-                }}>
-                  <span style={{ fontSize: '16px', color, letterSpacing: '0.06em', display: 'flex' }}>=</span>
-                  <span style={{ fontSize: '44px', fontWeight: 700, color: '#f0ede8', lineHeight: 1, display: 'flex' }}>
+          {top.map((eq, i) => {
+            const cnt = Math.floor(amount / eq.price);
+            const color = CAT_COLORS[eq.category];
+            return (
+              <div key={eq.id} style={{
+                display: 'flex', flexDirection: 'column', gap: '2px',
+                paddingBottom: i < top.length - 1 ? '24px' : '0',
+                marginBottom: i < top.length - 1 ? '24px' : '0',
+                borderBottom: i < top.length - 1 ? '1px solid rgba(255,255,255,0.07)' : 'none',
+                opacity: 1 - i * 0.08,
+              }}>
+                <div style={{ display: 'flex', alignItems: 'baseline', gap: '14px' }}>
+                  <span style={{ fontSize: '14px', color, letterSpacing: '0.06em', display: 'flex', fontWeight: 600 }}>=</span>
+                  <span style={{ fontSize: '54px', fontWeight: 700, color: '#f0ede8', lineHeight: 1, display: 'flex', letterSpacing: '-0.02em' }}>
                     {formatCount(cnt)}
                   </span>
-                  <span style={{ fontSize: '18px', color: 'rgba(240,237,232,0.55)', display: 'flex' }}>
-                    {eq.name}
-                  </span>
                 </div>
-              );
-            })}
-          </div>
-        </div>
-
-        {/* Bottom domain */}
-        <div style={{
-          fontSize: '14px',
-          color: 'rgba(240,237,232,0.25)',
-          letterSpacing: '0.12em',
-          display: 'flex',
-        }}>
-          kradene-ua.vercel.app/result/{amount}
+                <div style={{ fontSize: '26px', color: 'rgba(240,237,232,0.60)', display: 'flex', paddingLeft: '28px' }}>
+                  {eq.name}
+                </div>
+              </div>
+            );
+          })}
         </div>
       </div>
     ),

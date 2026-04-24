@@ -3,7 +3,8 @@
 import { useState, useRef } from 'react';
 import { EQUIVALENTS, CAT_LABELS, CAT_COLORS } from '@/lib/equivalents';
 import { CASES, CorruptionCase } from '@/data/cases';
-import { formatUAH, formatUSD, parseInput } from '@/lib/formatters';
+import { formatUAH, formatUSD, formatCount, parseInput } from '@/lib/formatters';
+import { BASE_URL } from '@/lib/config';
 import EquivalentCard from './EquivalentCard';
 import ShareRow from './ShareRow';
 
@@ -223,6 +224,29 @@ function ResultSection({
         <div className="font-mono text-[13px] text-white/45 tracking-[0.08em]">
           = ось що можна було б мати
         </div>
+      </div>
+
+      {/* Inline share strip */}
+      <div className="flex gap-2 mb-8 flex-wrap items-center">
+        <span className="font-mono text-[11px] tracking-[0.15em] text-white/35 uppercase mr-1">Поділитись:</span>
+        {[
+          { label: 'Telegram', color: '#229ED9', href: `https://t.me/share/url?url=${encodeURIComponent(`${BASE_URL}/result/${amount}`)}&text=${encodeURIComponent(`${formatUAH(amount)} вкрадених — це ${formatCount(Math.floor(amount / 15000))} бронежилетів. ${BASE_URL}/result/${amount}`)}` },
+          { label: 'Twitter/X', color: '#E7E9EA', href: `https://twitter.com/intent/tweet?text=${encodeURIComponent(`${formatUAH(amount)} вкрадених коштів — це ${formatCount(Math.floor(amount / 15000))} бронежилетів для ЗСУ. ${BASE_URL}/result/${amount}`)}` },
+          { label: 'Facebook', color: '#1877F2', href: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(`${BASE_URL}/result/${amount}`)}` },
+        ].map(p => (
+          <a
+            key={p.label}
+            href={p.href}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="font-mono text-[12px] px-3.5 py-2 rounded no-underline transition-all"
+            style={{ border: `1px solid ${p.color}55`, color: p.color, background: `${p.color}10` }}
+            onMouseEnter={e => (e.currentTarget.style.background = `${p.color}22`)}
+            onMouseLeave={e => (e.currentTarget.style.background = `${p.color}10`)}
+          >
+            {p.label}
+          </a>
+        ))}
       </div>
 
       {/* Category filter */}

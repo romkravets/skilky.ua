@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { BASE_URL } from '@/lib/config';
 import { formatUAH } from '@/lib/formatters';
 import Calculator from '@/components/Calculator';
+import SharePanel from '@/components/SharePanel';
 import { fetchUsdRate } from '@/lib/nbu';
 
 interface Props {
@@ -19,7 +20,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     description: `${amountStr} вкрадених коштів — порахуй, що можна було збудувати або купити.`,
     openGraph: {
       title: `${amountStr} вкрадених коштів`,
-      description: 'Подивись, що можна було збудувати або купити.',
+      description: 'Подивись, що можна було збудувати або купити на ці гроші.',
       url: `${BASE_URL}/result/${amount}`,
       images: [{ url: ogImage, width: 1200, height: 630, alt: amountStr }],
     },
@@ -35,5 +36,11 @@ export default async function ResultPage({ params }: Props) {
   const { amount: raw } = await params;
   const amount = parseInt(raw, 10);
   const usdRate = await fetchUsdRate();
-  return <Calculator usdRate={usdRate} prefillAmount={amount} />;
+
+  return (
+    <>
+      <SharePanel amount={amount} />
+      <Calculator usdRate={usdRate} prefillAmount={amount} />
+    </>
+  );
 }
