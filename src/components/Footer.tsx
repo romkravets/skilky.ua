@@ -1,4 +1,4 @@
-import Link from 'next/link';
+import Link from "next/link";
 
 export default function Footer() {
   return (
@@ -8,9 +8,9 @@ export default function Footer() {
       </div>
       <div className="flex gap-5">
         {[
-          { label: 'Методологія', href: '/about' },
-          { label: 'Джерела', href: '/about#sources' },
-          { label: 'GitHub', href: 'https://github.com' },
+          { label: "Методологія", href: "/about" },
+          { label: "Джерела", href: "/about#sources" },
+          { label: "GitHub", href: "https://github.com/romkravets" },
         ].map(({ label, href }) => (
           <Link
             key={label}
