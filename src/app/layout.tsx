@@ -24,6 +24,9 @@ const ibmPlexSans = IBM_Plex_Sans({
 });
 
 export const metadata: Metadata = {
+  verification: {
+    google: 'TCpAsFwFwDmPDE_TPrmXp5Wl8a4ZBlygB-1qmR2uSBA',
+  },
   title: 'Калькулятор вкрадених мільярдів',
   description: 'Введіть суму вкрадених коштів — і дізнайтеся, що могло бути збудовано, куплено або врятовано.',
   metadataBase: new URL(BASE_URL),
