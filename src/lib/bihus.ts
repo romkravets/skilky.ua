@@ -10,7 +10,7 @@ export async function fetchBihusNews(count = 6): Promise<BihusArticle[]> {
   try {
     const res = await fetch('https://bihus.info/feed/', {
       headers: { 'User-Agent': 'Mozilla/5.0 (compatible; kradene.ua/1.0)' },
-      next: { revalidate: 3600 },
+      next: { revalidate: 86400 },
     });
     if (!res.ok) return [];
     const xml = await res.text();
