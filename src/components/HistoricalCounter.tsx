@@ -59,6 +59,77 @@ function calcWar(now: number): number {
   return Math.max(0, (now - WAR_START) * WAR_PER_MS);
 }
 
+// ─── Hybrid War 2014–2022 (Crimea + Donbas) ──────────────────────────────────
+// Phase I of Russian aggression — before full-scale invasion
+// Annexation of Crimea: March 18, 2014 (treaty signed)
+// Donbas hostilities:   April 12, 2014 (DPR / LPR armed seizures)
+// Phase I ends Feb 24, 2022 — after that, all losses fold into full-scale estimate
+const CRIMEA_START = new Date("2014-03-18T00:00:00.000Z").getTime();
+const DONBAS_START = new Date("2014-04-12T00:00:00.000Z").getTime();
+const HYBRID_WAR_END = WAR_START;
+
+// Annual loss estimates (conservative, sourced):
+//   Crimea ~$2.5B/yr: tourism $800M, GDP share, energy assets (KSE, Мінфін)
+//   Donbas ~$8B/yr: 22% of industrial output, IDPs, war damage (МВФ Article IV, ЄБРР)
+const CRIMEA_ANNUAL_USD = 2_500_000_000;
+const DONBAS_ANNUAL_USD = 8_000_000_000;
+
+const CRIMEA_TOTAL_USD = Math.round(
+  ((HYBRID_WAR_END - CRIMEA_START) / (365.25 * 24 * 60 * 60 * 1000)) *
+    CRIMEA_ANNUAL_USD,
+);
+const DONBAS_TOTAL_USD = Math.round(
+  ((HYBRID_WAR_END - DONBAS_START) / (365.25 * 24 * 60 * 60 * 1000)) *
+    DONBAS_ANNUAL_USD,
+);
+const HYBRID_TOTAL_USD = CRIMEA_TOTAL_USD + DONBAS_TOTAL_USD;
+
+const CRIMEA_STATS: { label: string; value: string; sub: string }[] = [
+  {
+    label: "Вилучених держактивів",
+    value: "$11+ млрд",
+    sub: "Чорноморнафтогаз, порти, підприємства (KSE)",
+  },
+  {
+    label: "Туристичний дохід / рік",
+    value: "~$800 млн",
+    sub: "Втрачено щорічно для бюджету України",
+  },
+  {
+    label: "Переміщені жителі",
+    value: "~2.4 млн",
+    sub: "ООН / ІОМ, 2014–2022",
+  },
+  {
+    label: "Морська виключна зона",
+    value: ">$1 трлн",
+    sub: "Шельфові ресурси Чорного та Азовського морів",
+  },
+];
+
+const DONBAS_STATS: { label: string; value: string; sub: string }[] = [
+  {
+    label: "Частка в промисловості до 2014",
+    value: "~22%",
+    sub: "Вугілля, сталь, хімія, машинобудування",
+  },
+  {
+    label: "Вимушені переселенці до 2022",
+    value: "~1.4 млн",
+    sub: "УВКБ ООН / Мінсоцполітики",
+  },
+  {
+    label: "Втрата місць праці",
+    value: "~700 тис.",
+    sub: "В окупованих районах Донецької та Луган. обл.",
+  },
+  {
+    label: "Пряма шкода інфраструктурі",
+    value: "$30+ млрд",
+    sub: "Задокументовані збитки KSE, 2014–2022",
+  },
+];
+
 // ─── War damage key facts (sourced) ──────────────────────────────────────────
 const WAR_STATS = [
   {
@@ -412,6 +483,158 @@ export default function HistoricalCounter() {
               <BuildCard key={b.id} build={b} count={count} delay={i * 60} />
             );
           })}
+        </div>
+      </div>
+
+      {/* ── Hybrid War: Crimea + Donbas 2014–2022 */}
+      <div className="mb-12">
+        {/* Phase label */}
+        <div className="flex items-center gap-3 mb-5">
+          <div className="h-px flex-1 bg-gradient-to-r from-transparent to-amber-600/40" />
+          <div className="font-mono text-[9px] tracking-[0.2em] uppercase text-amber-500/60 whitespace-nowrap">
+            Фаза I — гібридна агресія
+          </div>
+          <div className="h-px flex-1 bg-gradient-to-l from-transparent to-amber-600/40" />
+        </div>
+
+        <div className="font-mono text-[11px] tracking-[0.2em] text-amber-400/90 uppercase mb-1">
+          {"// Анексія Криму та окупація Донбасу"}
+        </div>
+        <div className="font-mono text-[10px] text-white/30 mb-6">
+          Березень 2014 → 24 лютого 2022 &mdash; до повномасштабного вторгнення
+        </div>
+
+        {/* Total summary card */}
+        <div className="rounded-sm border border-amber-900/30 bg-[var(--bg2)] p-5 mb-6">
+          <div className="font-mono text-[10px] text-white/30 uppercase tracking-widest mb-3">
+            Сукупні втрати фази I (оцінка)
+          </div>
+          <div
+            className="font-display font-bold text-amber-400 leading-none tabular-nums mb-1"
+            style={{
+              fontSize: "clamp(24px, 4.5vw, 52px)",
+              letterSpacing: "-0.02em",
+            }}
+          >
+            ~${fmt(HYBRID_TOTAL_USD / 1e9, 1)} млрд
+          </div>
+          <div className="font-mono text-[12px] text-white/35 mb-5">
+            ≈ ₴{" "}
+            {((HYBRID_TOTAL_USD * UAH_PER_USD) / 1e12).toLocaleString("uk-UA", {
+              minimumFractionDigits: 1,
+              maximumFractionDigits: 1,
+            })}{" "}
+            трлн
+          </div>
+
+          {/* Proportion bars */}
+          <div className="space-y-3">
+            <div>
+              <div className="flex justify-between items-baseline mb-1.5">
+                <span className="font-mono text-[10px] text-white/40">
+                  Крим (7.9 роки × $2.5 млрд/рік)
+                </span>
+                <span className="font-mono text-[11px] font-semibold text-amber-300">
+                  ~${fmt(CRIMEA_TOTAL_USD / 1e9, 1)} млрд
+                </span>
+              </div>
+              <div className="h-2 rounded-full bg-white/7 overflow-hidden">
+                <div
+                  className="h-full rounded-full bg-amber-400/60"
+                  style={{
+                    width: `${Math.round((CRIMEA_TOTAL_USD / HYBRID_TOTAL_USD) * 100)}%`,
+                  }}
+                />
+              </div>
+            </div>
+            <div>
+              <div className="flex justify-between items-baseline mb-1.5">
+                <span className="font-mono text-[10px] text-white/40">
+                  Донбас (7.9 роки × $8 млрд/рік)
+                </span>
+                <span className="font-mono text-[11px] font-semibold text-amber-500">
+                  ~${fmt(DONBAS_TOTAL_USD / 1e9, 1)} млрд
+                </span>
+              </div>
+              <div className="h-2 rounded-full bg-white/7 overflow-hidden">
+                <div
+                  className="h-full rounded-full bg-amber-600/60"
+                  style={{
+                    width: `${Math.round((DONBAS_TOTAL_USD / HYBRID_TOTAL_USD) * 100)}%`,
+                  }}
+                />
+              </div>
+            </div>
+          </div>
+
+          <div className="font-mono text-[9px] text-white/20 mt-4 pt-3 border-t border-white/6 leading-[1.6]">
+            Після 24.02.2022 збитки від окупації включені в оцінку повномасштабної агресії
+            ($55 млрд/рік) — подвійного рахунку немає.
+          </div>
+        </div>
+
+        {/* Two-column key facts grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          {/* Crimea column */}
+          <div>
+            <div className="font-mono text-[9px] tracking-[0.12em] uppercase text-amber-300/70 mb-3 flex items-center gap-2">
+              <span className="w-1.5 h-1.5 rounded-full bg-amber-300/70 shrink-0" />
+              Анексія Криму — з 18 берез. 2014
+            </div>
+            <div className="flex flex-col gap-2">
+              {CRIMEA_STATS.map((s, i) => (
+                <div
+                  key={i}
+                  className="p-3 rounded-sm border border-white/6 bg-[var(--bg3)]"
+                >
+                  <div className="font-display font-bold text-amber-300 text-[15px] leading-tight mb-0.5">
+                    {s.value}
+                  </div>
+                  <div className="font-mono text-[10px] text-white/50">
+                    {s.label}
+                  </div>
+                  <div className="font-mono text-[9px] text-white/25 mt-0.5">
+                    {s.sub}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Donbas column */}
+          <div>
+            <div className="font-mono text-[9px] tracking-[0.12em] uppercase text-amber-500/70 mb-3 flex items-center gap-2">
+              <span className="w-1.5 h-1.5 rounded-full bg-amber-500/70 shrink-0" />
+              Окупація Донбасу — з 12 квіт. 2014
+            </div>
+            <div className="flex flex-col gap-2">
+              {DONBAS_STATS.map((s, i) => (
+                <div
+                  key={i}
+                  className="p-3 rounded-sm border border-white/6 bg-[var(--bg3)]"
+                >
+                  <div className="font-display font-bold text-amber-400 text-[15px] leading-tight mb-0.5">
+                    {s.value}
+                  </div>
+                  <div className="font-mono text-[10px] text-white/50">
+                    {s.label}
+                  </div>
+                  <div className="font-mono text-[9px] text-white/25 mt-0.5">
+                    {s.sub}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* Phase connector → Full scale */}
+        <div className="mt-6 flex items-center gap-3">
+          <div className="h-px flex-1 bg-gradient-to-r from-amber-600/30 to-orange-600/40" />
+          <div className="font-mono text-[9px] tracking-widest uppercase text-white/25 whitespace-nowrap">
+            → Фаза II: повномасштабна агресія / 24.02.2022
+          </div>
+          <div className="h-px flex-1 bg-gradient-to-l from-orange-600/40 to-transparent" />
         </div>
       </div>
 
