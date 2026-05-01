@@ -1,11 +1,24 @@
+import HistoricalCounter from "@/components/HistoricalCounter";
 import type { Metadata } from "next";
 import Link from "next/link";
-import HistoricalCounter from "@/components/HistoricalCounter";
 
 export const metadata: Metadata = {
-  title: "Лічильник корупційних втрат | kradene.ua",
+  title: "Лічильник корупційних втрат і збитків від війни | kradene.ua",
   description:
-    "Скільки Україна втратила через корупцію з 1991 року? Оціночний лічильник на основі даних МВФ, Світового банку та НАБУ.",
+    "Скільки Україна втратила через корупцію з 1991 року і через війну Росії з 2022? Лічильник у реальному часі: збитки від корупції, економічний вплив повномасштабного вторгнення та доходи держбюджету. Дані МВФ, Світового банку, KSE.",
+  openGraph: {
+    title: "Лічильник корупційних втрат і збитків від війни",
+    description:
+      "Лічильник у реальному часі: корупційні втрати з 1991 року, збитки від повномасштабного вторгнення Росії та доходи держбюджету України.",
+    url: "https://kradene-ua.vercel.app/counter",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Лічильник корупційних втрат і збитків від війни | kradene.ua",
+    description:
+      "Реальночасовий лічильник: корупція з 1991, збитки від війни з 2022, бюджет України.",
+  },
 };
 
 export default function CounterPage() {
